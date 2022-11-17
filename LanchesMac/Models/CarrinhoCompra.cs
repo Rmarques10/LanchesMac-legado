@@ -1,5 +1,6 @@
 ﻿using LanchesMac.Context;
 using Microsoft.EntityFrameworkCore;
+using NuGet.DependencyResolver;
 
 namespace LanchesMac.Models
 {
@@ -89,6 +90,23 @@ namespace LanchesMac.Models
                 .Where(c=> c.CarrinhoCompraId == CarrinhoCompraId)
                 .Include(s=> s.Lanche)
                 .ToList());
+        }
+
+        public void LimparCarrinho()
+        {
+            var carrinhoItens = _context.CarrinhoCompraItens
+                .Where(carrinho => carrinho.CarrinhoCompraId == CarrinhoCompraId);
+
+            _context.CarrinhoCompraItens.RemoveRange(carrinhoItens);
+            _context.SaveChanges();
+        }
+
+        public decimal GetCarrinhoTotal()
+        {
+            var total = _context.CarrinhoCompraItens
+                .Where(c => c.CarrinhoCompraId == CarrinhoCompraId)
+                .Select(c => c.Lanche.Preco * c.Quantidade).Sum();
+            return total;
         }
     }
 }
