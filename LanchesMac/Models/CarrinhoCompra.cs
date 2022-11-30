@@ -101,7 +101,7 @@ namespace LanchesMac.Models
             _context.SaveChanges();
         }
 
-        public decimal GetCarrinhoTotal()
+        public decimal GetCarrinhoCompraTotal()
         {
             var total = _context.CarrinhoCompraItens
                 .Where(c => c.CarrinhoCompraId == CarrinhoCompraId)
