@@ -17,7 +17,7 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddDbContext<AppDbContext>(options=>
+        services.AddDbContext<AppDbContext>(options =>
         options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
         services.AddTransient<ILancheRepository, LancheRepository>();
@@ -54,6 +54,11 @@ public class Startup
 
         app.UseEndpoints(endpoints =>
         {
+            endpoints.MapControllerRoute(
+                name: "categoriaFiltro",
+                pattern: "Lanche/{action}/{categoria?}",
+                defaults: new { Controller = "Lanche", AccessViolationException = "List" });
+
             endpoints.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
